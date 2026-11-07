@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passengers Directory - Mithil Reservation Service (CRUD Operations)</title>
+  <meta name="description" content="Manage registered travelers, Indian ID proof verifications, contact information, and travel profiles.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👤</text></svg>">
+</head>
+<body>
+
+  <!-- Cultural Indian Top Bar -->
+  <div class="top-bar-cultural"></div>
+  <div class="sub-header-banner">
+    <span>🪷 Mithil Reservation Service Yatri Directory</span>
+    <span>•</span>
+    <span>Aadhaar, PAN & Government ID Verified Records</span>
+    <span>•</span>
+    <span>Live MySQL Database Integration</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🪷</div>
+        <div class="brand-text">
+          <h1>Mithil Reservation Service</h1>
+          <span>Online Bus Booking & Fleet Portal</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home & Book</a></li>
+          <li><a href="buses.html" class="nav-link">Buses Fleet</a></li>
+          <li><a href="passengers.html" class="nav-link active">Passengers</a></li>
+          <li><a href="bookings.html" class="nav-link">Bookings & PNR</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><button class="btn btn-primary btn-sm" onclick="openAddPassengerModal()">+ New Passenger</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Page Hero Banner with Image -->
+    <section class="page-hero compact">
+      <div class="hero-text-content">
+        <div class="cultural-badge">
+          <span>👥 Yatri Parivar</span> • <span>MySQL Table: passengers</span>
+        </div>
+        <h1 class="hero-title" style="font-size: 2rem;">Passengers Directory</h1>
+        <p class="hero-subtitle">
+          Manage passenger data across India with complete CRUD functionality: Register travelers with Indian Government ID proofs (Aadhaar, PAN, Voter ID), update contact profiles, or remove expired entries.
+        </p>
+        <button class="btn btn-primary" onclick="openAddPassengerModal()">
+          <span>+ Register New Passenger</span> <span>👤</span>
+        </button>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="images/passengers.jpg" alt="Indian travelers and passengers on their journey" class="hero-image" id="passengersHeroImage">
+        <div class="hero-image-overlay"></div>
+      </div>
+    </section>
+
+    <!-- Yatri Experience on Picture -->
+    <section style="margin-bottom: 32px;">
+      <div class="features-grid-3">
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/cultural_heritage.jpg" alt="Family & Pilgrimage Groups" class="picture-card-img">
+            <span class="picture-card-tag">🪷 Family Pilgrimages</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Family & Group Yatras</h3>
+            <p class="picture-card-desc">Special sleeper berth blocks for families traveling together to Ayodhya, Varanasi, Tirupati, Shirdi, and Ujjain.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/buses_fleet.jpg" alt="Luggage Assistance & Boarding" class="picture-card-img">
+            <span class="picture-card-tag">🧳 Luggage Assistance</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Luggage & Boarding Care</h3>
+            <p class="picture-card-desc">Under-carriage secure luggage tags and porter assistance at all major Indian city junctions and highway stops.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/hero_bus.jpg" alt="Night Safety & Comfort" class="picture-card-img">
+            <span class="picture-card-tag">🔒 24x7 Night Safety</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Verified Conductor Support</h3>
+            <p class="picture-card-desc">CCTV monitored cabins, panic buttons, emergency medical kits, and certified 2-driver teams for overnight safety.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRUD Action & Search Bar -->
+    <section class="action-bar">
+      <div class="action-search">
+        <input type="text" id="searchPassengerInput" class="form-control" placeholder="Search by name, 10-digit phone, email, or city...">
+      </div>
+      <div>
+        <span id="passengersTotalCount" style="font-weight: 700; color: var(--peacock-dark); margin-right: 14px;">Loading travelers...</span>
+        <button class="btn btn-primary" onclick="openAddPassengerModal()">+ Register New Passenger</button>
+      </div>
+    </section>
+
+    <!-- Passengers Data Table (READ, UPDATE, DELETE) -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Traveler Name & Demographics</th>
+            <th>Contact Details</th>
+            <th>Verified Govt ID</th>
+            <th>City</th>
+            <th>Registration Date</th>
+            <th>Actions (CRUD)</th>
+          </tr>
+        </thead>
+        <tbody id="passengersTableBody">
+          <!-- Loaded dynamically via js/passengers.js -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cultural Information Box -->
+    <div class="cultural-quote-box">
+      <strong>🔒 Yatri Data Privacy & Security:</strong>
+      <p style="margin-top: 4px;">In accordance with Indian digital data protection standards, all passenger contact details and identity numbers are securely stored in the MySQL database and verified for smooth onboard conductor checks.</p>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================
+       MODAL: ADD / EDIT PASSENGER (CREATE & UPDATE)
+       ========================================================== -->
+  <div class="modal-overlay" id="passengerModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="passengerModalTitle">Register New Passenger</h3>
+        <button class="close-modal" onclick="UI.closeModal('passengerModal')">&times;</button>
+      </div>
+
+      <form id="passengerForm">
+        <div class="modal-body">
+          <input type="hidden" id="passengerFormId">
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="passengerNameInput">Full Legal Name (as per Govt ID) *</label>
+            <input type="text" id="passengerNameInput" class="form-control" placeholder="e.g. Mithil Sharma" required>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="passengerPhoneInput">10-Digit Mobile Number *</label>
+              <input type="tel" id="passengerPhoneInput" class="form-control" placeholder="e.g. 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label for="passengerEmailInput">Email Address *</label>
+              <input type="email" id="passengerEmailInput" class="form-control" placeholder="e.g. mithil.sharma@gmail.com" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="passengerGenderInput">Gender *</label>
+              <select id="passengerGenderInput" class="form-control" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="passengerAgeInput">Age (Years) *</label>
+              <input type="number" id="passengerAgeInput" class="form-control" min="1" max="115" placeholder="e.g. 28" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="passengerIdTypeInput">Indian ID Proof Type *</label>
+              <select id="passengerIdTypeInput" class="form-control" required>
+                <option value="Aadhaar Card">Aadhaar Card</option>
+                <option value="PAN Card">PAN Card</option>
+                <option value="Voter ID">Voter ID</option>
+                <option value="Passport">Passport</option>
+                <option value="Driving License">Driving License</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="passengerIdNumberInput">ID Document Number *</label>
+              <input type="text" id="passengerIdNumberInput" class="form-control" placeholder="e.g. 4582-9012-3456" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="passengerCityInput">Home City / State *</label>
+            <input type="text" id="passengerCityInput" class="form-control" placeholder="e.g. Mumbai, Maharashtra" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('passengerModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSavePassenger">Save Passenger Profile 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      &copy; 2026 Mithil Reservation Service. Passengers Directory & MySQL CRUD Subsystem.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/passengers.js"></script>
+</body>
+</html>

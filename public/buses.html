@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buses Fleet Management - Mithil Reservation Service (CRUD Operations)</title>
+  <meta name="description" content="Manage luxury coach fleet, schedules, fares, and routes across India. Full MySQL CRUD Operations.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚌</text></svg>">
+</head>
+<body>
+
+  <!-- Cultural Indian Top Bar -->
+  <div class="top-bar-cultural"></div>
+  <div class="sub-header-banner">
+    <span>🪷 Mithil Reservation Service Fleet Operations</span>
+    <span>•</span>
+    <span>Volvo, Scania, BharatBenz AC Luxury Coaches</span>
+    <span>•</span>
+    <span>Live MySQL Database Integration</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🪷</div>
+        <div class="brand-text">
+          <h1>Mithil Reservation Service</h1>
+          <span>Online Bus Booking & Fleet Portal</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home & Book</a></li>
+          <li><a href="buses.html" class="nav-link active">Buses Fleet</a></li>
+          <li><a href="passengers.html" class="nav-link">Passengers</a></li>
+          <li><a href="bookings.html" class="nav-link">Bookings & PNR</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><button class="btn btn-primary btn-sm" onclick="openAddBusModal()">+ Add New Bus</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Page Hero Banner with Image -->
+    <section class="page-hero compact">
+      <div class="hero-text-content">
+        <div class="cultural-badge">
+          <span>🇮🇳 Royal Bharat Fleets</span> • <span>MySQL Table: buses</span>
+        </div>
+        <h1 class="hero-title" style="font-size: 2rem;">Buses Fleet Management</h1>
+        <p class="hero-subtitle">
+          Perform complete CRUD operations: Register new Indian intercity luxury coaches, adjust route fares in Indian Rupees (₹), update departure timings, or manage active service statuses.
+        </p>
+        <button class="btn btn-primary" onclick="openAddBusModal()">
+          <span>+ Register New Bus</span> <span>🚌</span>
+        </button>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="images/buses_fleet.jpg" alt="Fleet of decorated Indian luxury buses parked in heritage courtyard" class="hero-image" id="busesFleetImage">
+        <div class="hero-image-overlay"></div>
+      </div>
+    </section>
+
+    <!-- Fleet Model Showcase on Picture -->
+    <section style="margin-bottom: 32px;">
+      <div class="features-grid-3">
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/hero_bus.jpg" alt="Volvo 9600 Multi-Axle Luxury Sleeper" class="picture-card-img">
+            <span class="picture-card-tag">🚌 Flagship Sleeper</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Volvo 9600 Multi-Axle</h3>
+            <p class="picture-card-desc">Flagship 15-meter ultra-luxury sleeper coaches with independent electronically controlled air suspension and premium berths.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/buses_fleet.jpg" alt="Courtyard Terminals & Regional Fleets" class="picture-card-img">
+            <span class="picture-card-tag">🇮🇳 Royal Fleets</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Heritage Terminal Hubs</h3>
+            <p class="picture-card-desc">Centralized maintenance bays and dedicated boarding lounges across Maharashtra, Gujarat, Rajasthan, and Karnataka.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/ticket_booking.jpg" alt="High-Speed Intercity Express" class="picture-card-img">
+            <span class="picture-card-tag">⚡ Express Intercity</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">BharatBenz Semi-Sleeper</h3>
+            <p class="picture-card-desc">Comfortable 2+2 pushback seating, panoramic UV-cut tinted windows, and punctual departure schedules on national corridors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRUD Action & Filter Bar -->
+    <section class="action-bar">
+      <div class="action-search">
+        <input type="text" id="filterBusInput" class="form-control" placeholder="Search by bus name, plate number, city...">
+        <select id="filterBusStatus" class="form-control" style="max-width: 160px;">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Maintenance">Maintenance</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div>
+        <span id="busesTotalCount" style="font-weight: 700; color: var(--peacock-dark); margin-right: 14px;">Loading fleet...</span>
+        <button class="btn btn-primary" onclick="openAddBusModal()">+ Add New Bus</button>
+      </div>
+    </section>
+
+    <!-- Buses Data Table (READ, UPDATE, DELETE) -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Bus Name & Class</th>
+            <th>Registration No.</th>
+            <th>Route & Schedule</th>
+            <th>Capacity</th>
+            <th>Fare (₹)</th>
+            <th>Status</th>
+            <th>Actions (CRUD)</th>
+          </tr>
+        </thead>
+        <tbody id="busesTableBody">
+          <!-- Loaded dynamically via js/buses.js -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cultural Information Box -->
+    <div class="cultural-quote-box">
+      <strong>✨ Fleet Maintenance & Safety Standards:</strong>
+      <p style="margin-top: 4px;">Each luxury sleeper in the Mithil Reservation fleet undergoes regular maintenance and puja ceremonies before every long-distance intercity journey to ensure the highest safety, comfort, and peace of mind for every Yatri.</p>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================
+       MODAL: ADD / EDIT BUS (CREATE & UPDATE)
+       ========================================================== -->
+  <div class="modal-overlay" id="busModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="busModalTitle">Add New Bus to Fleet</h3>
+        <button class="close-modal" onclick="UI.closeModal('busModal')">&times;</button>
+      </div>
+
+      <form id="busForm">
+        <div class="modal-body">
+          <input type="hidden" id="busFormId">
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="busNameInput">Bus / Fleet Service Name *</label>
+              <input type="text" id="busNameInput" class="form-control" placeholder="e.g. Garuda Royal Sleeper" required>
+            </div>
+            <div class="form-group">
+              <label for="busNumberInput">Registration Number *</label>
+              <input type="text" id="busNumberInput" class="form-control" placeholder="e.g. MH 12 AB 4589" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="busSourceInput">Source City *</label>
+              <input type="text" id="busSourceInput" class="form-control" placeholder="e.g. Mumbai" required>
+            </div>
+            <div class="form-group">
+              <label for="busDestinationInput">Destination City *</label>
+              <input type="text" id="busDestinationInput" class="form-control" placeholder="e.g. Goa" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="busDepTimeInput">Departure Time *</label>
+              <input type="text" id="busDepTimeInput" class="form-control" placeholder="e.g. 20:30" required>
+            </div>
+            <div class="form-group">
+              <label for="busArrTimeInput">Arrival Time *</label>
+              <input type="text" id="busArrTimeInput" class="form-control" placeholder="e.g. 07:30" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="busTypeInput">Bus Model & Configuration *</label>
+              <select id="busTypeInput" class="form-control" required>
+                <option value="Multi-Axle AC Sleeper (2+1)">Multi-Axle AC Sleeper (2+1)</option>
+                <option value="Volvo 9600 Multi-Axle AC Sleeper">Volvo 9600 Multi-Axle AC Sleeper</option>
+                <option value="BharatBenz AC Semi-Sleeper">BharatBenz AC Semi-Sleeper</option>
+                <option value="Scania High-Deck AC Seater">Scania High-Deck AC Seater</option>
+                <option value="Executive AC Seater">Executive AC Seater</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="busSeatsInput">Total Seating Capacity *</label>
+              <input type="number" id="busSeatsInput" class="form-control" min="10" max="60" value="36" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="busFareInput">Ticket Fare Per Seat (₹) *</label>
+              <input type="number" id="busFareInput" class="form-control" step="10" min="50" placeholder="e.g. 1250" required>
+            </div>
+            <div class="form-group">
+              <label for="busStatusInput">Fleet Status *</label>
+              <select id="busStatusInput" class="form-control" required>
+                <option value="Active">Active (In Service)</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('busModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveBus">Save Bus to MySQL 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      &copy; 2026 Mithil Reservation Service. Fleet Management & MySQL CRUD Subsystem.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/buses.js"></script>
+</body>
+</html>

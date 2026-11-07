@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mithil Reservation Service - Online Bus Reservation System | Shubh Yatra</title>
+  <meta name="description" content="Experience premium intercity bus travel across India with Mithil Reservation Service. Auspicious, reliable, and comfortable journeys.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚌</text></svg>">
+</head>
+<body>
+
+  <!-- Cultural Indian Tiranga & Shubh Yatra Top Bar -->
+  <div class="top-bar-cultural"></div>
+  <div class="sub-header-banner">
+    <span>🪷 "अतिथि देवो भव" - Guest is Divine</span>
+    <span>•</span>
+    <span>🇮🇳 Pan-India Luxury Sleeper & Express Network</span>
+    <span>•</span>
+    <span>📞 24x7 Yatri Seva Helpline: 1800-MITHIL-BUS</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="brand-logo" id="brandLogoHome">
+        <div class="brand-icon">🪷</div>
+        <div class="brand-text">
+          <h1>Mithil Reservation Service</h1>
+          <span>Online Bus Booking & Fleet Portal</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link active">Home & Book</a></li>
+          <li><a href="buses.html" class="nav-link">Buses Fleet</a></li>
+          <li><a href="passengers.html" class="nav-link">Passengers</a></li>
+          <li><a href="bookings.html" class="nav-link">Bookings & PNR</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><a href="#searchSection" class="nav-link nav-cta">Book Journey</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Hero Section with Indian Culture & Bus Image -->
+    <section class="page-hero">
+      <div class="hero-text-content">
+        <div class="cultural-badge">
+          <span>✨ Shubh Yatra</span> • <span>Royal Indian Hospitality</span>
+        </div>
+        <h1 class="hero-title">Connecting Sacred Shrines & Vibrant Metros Across Bharat</h1>
+        <p class="hero-subtitle">
+          Welcome to Mithil Reservation Service. Experience the finest multi-axle AC sleepers, punctual schedules, and seamless online bus reservations with true Indian warmth.
+        </p>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <a href="#searchSection" class="btn btn-primary">Find Your Bus</a>
+          <a href="bookings.html" class="btn btn-outline" style="color: white; border-color: rgba(255,255,255,0.4);">Check PNR Status</a>
+        </div>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="images/hero_bus.jpg" alt="Luxury Indian Sleeper Bus with Traditional Marigold Garland" class="hero-image" id="heroImageHome">
+        <div class="hero-image-overlay"></div>
+      </div>
+    </section>
+
+    <!-- Real-time Database Statistics -->
+    <section class="stats-grid" id="statsSection">
+      <div class="stat-card">
+        <div class="stat-icon">🚌</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statBuses">--</div>
+          <div class="stat-label">Active Luxury Buses</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statPassengers">--</div>
+          <div class="stat-label">Registered Travelers</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎫</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statBookings">--</div>
+          <div class="stat-label">Confirmed Bookings</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🪙</div>
+        <div class="stat-info">
+          <div class="stat-value" id="statRevenue">--</div>
+          <div class="stat-label">Total Booking Revenue</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-box-card" id="searchSection">
+      <div class="search-box-header">
+        <h2><span>🪷</span> Search Live Routes & Reserve Your Seat</h2>
+        <span style="font-size: 0.85rem; color: var(--saffron-primary); font-weight: 700;">Direct MySQL Live Database</span>
+      </div>
+
+      <form id="searchBusForm">
+        <div class="search-grid">
+          <div class="form-group">
+            <label for="searchSource"><span>🚩</span> Origin / Departure City</label>
+            <select id="searchSource" class="form-control">
+              <option value="">All Indian Cities</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="searchDestination"><span>🏁</span> Destination City</label>
+            <select id="searchDestination" class="form-control">
+              <option value="">All Indian Destinations</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="searchBusType"><span>✨</span> Coach Class</label>
+            <select id="searchBusType" class="form-control">
+              <option value="">All Luxury Classes</option>
+              <option value="Multi-Axle AC Sleeper (2+1)">Multi-Axle AC Sleeper (2+1)</option>
+              <option value="Volvo 9600 Multi-Axle AC Sleeper">Volvo 9600 Multi-Axle AC Sleeper</option>
+              <option value="BharatBenz AC Semi-Sleeper">BharatBenz AC Semi-Sleeper</option>
+              <option value="Executive AC Seater">Executive AC Seater</option>
+            </select>
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; height: 48px;" id="btnSearchBuses">
+              🔍 Search
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Available Buses Section -->
+    <section>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div>
+          <h2 style="font-family: 'Cinzel', serif; color: var(--peacock-dark);">Available Fleet & Departure Schedules</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Select your route and click "Book Now" to choose seats in real-time.</p>
+        </div>
+        <a href="buses.html" class="btn btn-outline btn-sm">Manage Fleets (CRUD) ➔</a>
+      </div>
+
+      <!-- Live Bus Cards Grid -->
+      <div class="bus-cards-grid" id="busesListContainer">
+        <!-- Rendered via main.js -->
+      </div>
+    </section>
+
+    <!-- Cultural Travel Ethics & Pillars -->
+    <section class="cultural-quote-box">
+      <strong>॥ मातृ देवो भव । पितृ देवो भव । अतिथि देवो भव ॥</strong>
+      <p style="margin-top: 6px;">"At Mithil Reservation Service, we regard every passenger as an honoured guest. We blend Indian cultural warmth with cutting-edge German & Swedish automotive engineering for unmatched safety and comfort."</p>
+    </section>
+
+    <!-- Popular Heritage Routes of India (Picture Showcase) -->
+    <section style="margin: 40px 0;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
+        <div>
+          <h2 style="font-family: 'Cinzel', serif; color: #ffffff;">Popular Pilgrimage & Heritage Corridors</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Experience Bharat's spiritual wonders and royal circuits on comfortable luxury sleepers.</p>
+        </div>
+      </div>
+
+      <div class="features-grid-3">
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/cultural_heritage.jpg" alt="Kashi and Ayodhya Sacred Pilgrimage" class="picture-card-img">
+            <span class="picture-card-tag">🕉️ Sacred Corridor</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Kashi - Ayodhya Express</h3>
+            <p class="picture-card-desc">Connecting the sacred ghats of Varanasi with Shri Ram Janmabhoomi temple. Spiritual overnight sleeper journey with devotional audio onboard.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/buses_fleet.jpg" alt="Royal Rajputana Circuit Luxury Coaches" class="picture-card-img">
+            <span class="picture-card-tag">🏰 Royal Circuit</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Royal Rajputana Circuit</h3>
+            <p class="picture-card-desc">Delhi to Jaipur & Udaipur heritage overnight sleeper coaches with traditional Rajasthani warmth, hospitality, and pushback comfort.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/ticket_booking.jpg" alt="Konkan & Deccan Coastal Express Volvo" class="picture-card-img">
+            <span class="picture-card-tag">🌴 Coastal Express</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Konkan & Deccan Coastal</h3>
+            <p class="picture-card-desc">Mumbai - Pune - Goa super-luxury Volvo 9600 coaches with scenic Western Ghats views, free Wi-Fi, and complimentary refreshments.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================
+       MODAL 1: INTERACTIVE SEAT BOOKING MODAL
+       ========================================================== -->
+  <div class="modal-overlay" id="bookTicketModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3 id="modalBusTitle">Reserve Coach Seat</h3>
+          <span style="font-size: 0.8rem; color: #fed7aa;" id="modalRouteInfo"></span>
+        </div>
+        <button class="close-modal" onclick="UI.closeModal('bookTicketModal')">&times;</button>
+      </div>
+      
+      <form id="confirmBookingForm">
+        <div class="modal-body">
+
+          <!-- Passenger Selection -->
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="bookingPassengerSelect"><span>👤</span> Select Registered Passenger</label>
+            <select id="bookingPassengerSelect" class="form-control">
+              <!-- Loaded dynamically -->
+            </select>
+            <div style="margin-top: 6px;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="toggleNewPassengerForm()" style="font-size: 0.78rem;">
+                + Register New Passenger Profile Instead
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Register Passenger (Hidden by default) -->
+          <div id="newPassengerQuickForm" style="display: none; background: rgba(255, 153, 51, 0.1); border: 1.5px dashed rgba(255, 153, 51, 0.4); padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+            <h4 style="font-size: 0.85rem; color: #ff9933; margin-bottom: 10px;">Quick Passenger Registration</h4>
+            <div class="modal-grid-2">
+              <input type="text" id="quickFullName" class="form-control" placeholder="Full Name (e.g. Mithil Sharma)">
+              <input type="tel" id="quickPhone" class="form-control" placeholder="10-digit Mobile Number">
+              <input type="email" id="quickEmail" class="form-control" placeholder="Email Address">
+              <input type="text" id="quickCity" class="form-control" placeholder="City (e.g. Mumbai)">
+              <input type="number" id="quickAge" class="form-control" placeholder="Age (e.g. 28)" min="1" max="110">
+              <select id="quickGender" class="form-control">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Journey Date -->
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="bookingJourneyDate"><span>📅</span> Date of Journey</label>
+              <input type="date" id="bookingJourneyDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="bookingPaymentMethod"><span>💳</span> Indian Payment Mode</label>
+              <select id="bookingPaymentMethod" class="form-control">
+                <option value="Paid (UPI / GPay)">UPI / Google Pay / PhonePe</option>
+                <option value="Paid (RuPay Card)">RuPay / Indian Debit Card</option>
+                <option value="Paid (NetBanking)">Indian Net Banking</option>
+                <option value="Pending">Pay at Counter (Pending)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Interactive Indian Sleeper Berth Picker -->
+          <div class="seat-layout-container">
+            <div class="seat-deck-title">
+              <span>Select Seats (Lower & Upper Berths)</span>
+              <span>Fare: <strong id="modalPerSeatFare" style="color: var(--saffron-primary);">₹0</strong> / seat</span>
+            </div>
+            
+            <div class="seat-grid" id="interactiveSeatGrid">
+              <!-- Rendered via main.js -->
+            </div>
+
+            <div class="seat-legend">
+              <div class="legend-pill">
+                <div class="legend-box" style="background: #111d35; border: 1.5px solid rgba(255,255,255,0.25);"></div>
+                <span>Available</span>
+              </div>
+              <div class="legend-pill">
+                <div class="legend-box" style="background: var(--saffron-primary); border: 1.5px solid #ff9933;"></div>
+                <span>Selected</span>
+              </div>
+              <div class="legend-pill">
+                <div class="legend-box" style="background: #1e293b; border: 1px solid #334155;"></div>
+                <span>Booked</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Seats Summary -->
+          <div class="form-group">
+            <label>Selected Berths</label>
+            <input type="text" id="selectedSeatsInput" class="form-control" readonly placeholder="Click berths above to select (e.g. L1, U2)">
+          </div>
+
+          <!-- Total Calculation Display -->
+          <div style="background: #081120; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 14px 18px; border-radius: 8px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 0.8rem; color: #fed7aa; display: block;">Total Selected Seats: <span id="selectedSeatsCount">0</span></span>
+              <span style="font-size: 0.75rem; color: #94a3b8;">Zero booking surcharge • GST included</span>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.8rem; color: #94a3b8; display: block;">Total Amount</span>
+              <strong style="font-size: 1.4rem; color: #ff9933;" id="totalBookingFareDisplay">₹0</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('bookTicketModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnConfirmBookingSubmit">Confirm & Generate Ticket 🪷</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       MODAL 2: INDIAN E-TICKET SUCCESS MODAL (PRINTABLE)
+       ========================================================== -->
+  <div class="modal-overlay" id="ticketSuccessModal">
+    <div class="modal-box" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3><span>🪷</span> Shubh Yatra - Booking Confirmed!</h3>
+        <button class="close-modal" onclick="UI.closeModal('ticketSuccessModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="ticket-container" id="printableTicket">
+          <div class="ticket-header">
+            <div>
+              <strong style="font-family: 'Cinzel', serif; font-size: 1.25rem;">Mithil Reservation Service</strong>
+              <div style="font-size: 0.75rem; color: #cbd5e1;">Official Electronic Reservation Slip (ERS)</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.75rem; color: #cbd5e1; display: block;">BOOKING PNR</span>
+              <span class="pnr-tag" id="ticketPnrDisplay" style="font-size: 1.15rem;">MBR-XXXXXX</span>
+            </div>
+          </div>
+
+          <div class="ticket-body">
+            <div class="ticket-watermark">MITHIL</div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Passenger Name</label>
+                <value id="ticketPassengerName">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Contact Number</label>
+                <value id="ticketPassengerPhone">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Bus Coach</label>
+                <value id="ticketBusName">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Journey Route</label>
+                <value id="ticketRoute">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-divider"></div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Date of Journey</label>
+                <value id="ticketJourneyDate">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Departure Schedule</label>
+                <value id="ticketTiming">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Reserved Seat(s)</label>
+                <value id="ticketSeats" style="color: var(--saffron-primary); font-size: 1.2rem;">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Total Fare Paid</label>
+                <value id="ticketTotalFare" style="color: var(--emerald-green); font-size: 1.2rem;">--</value>
+              </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 6px; font-size: 0.8rem; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span>Payment Mode: <strong id="ticketPaymentMethod" style="color: #ff9933;">UPI</strong></span> • 
+                <span style="color: var(--emerald-green); font-weight: 700;">Status: Confirmed</span>
+              </div>
+              <div>
+                <span>QR Security: Verified ✅</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="window.print()">🖨️ Print Ticket</button>
+        <button class="btn btn-primary" onclick="UI.closeModal('ticketSuccessModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Site Footer with Cultural Indian Ethos -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h2>🪷 Mithil Reservation Service</h2>
+        <p style="font-size: 0.9rem; line-height: 1.6; color: #94a3b8;">
+          Rooted in traditional Indian hospitality and powered by modern digital systems. Providing safe, punctual, and culturally respectful passenger transit across India.
+        </p>
+        <div style="margin-top: 14px; color: #fef08a; font-size: 0.85rem;">
+          ॥ सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः ॥
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home & Booking</a></li>
+          <li><a href="buses.html">Fleet Management</a></li>
+          <li><a href="passengers.html">Passengers Directory</a></li>
+          <li><a href="bookings.html">Reservations & PNR</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CRUD Operations</h4>
+        <ul class="footer-links">
+          <li><a href="buses.html">Buses (Create/Read/Update/Delete)</a></li>
+          <li><a href="passengers.html">Passengers (Full CRUD)</a></li>
+          <li><a href="bookings.html">Bookings (Full CRUD)</a></li>
+          <li><a href="bookings.html">E-Ticket Printing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Indian Digital Payments</h4>
+        <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+          100% Secure payments powered by Indian digital banking:
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">UPI</span>
+          <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">RuPay</span>
+          <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">Google Pay</span>
+          <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">Paytm</span>
+          <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">NetBanking</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; 2026 Mithil Reservation Service. All Rights Reserved. Built with HTML, CSS, JavaScript, Node.js, and MySQL.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

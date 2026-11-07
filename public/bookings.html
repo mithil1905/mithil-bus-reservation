@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookings & PNR Management - Mithil Reservation Service (CRUD Operations)</title>
+  <meta name="description" content="View all bus reservations, print official Indian e-tickets, update journey dates, and manage booking statuses.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎫</text></svg>">
+</head>
+<body>
+
+  <!-- Cultural Indian Top Bar -->
+  <div class="top-bar-cultural"></div>
+  <div class="sub-header-banner">
+    <span>🪷 Mithil Reservation Service PNR Subsystem</span>
+    <span>•</span>
+    <span>Indian Intercity Sleeper & Express Bookings</span>
+    <span>•</span>
+    <span>Live MySQL Database Integration</span>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🪷</div>
+        <div class="brand-text">
+          <h1>Mithil Reservation Service</h1>
+          <span>Online Bus Booking & Fleet Portal</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home & Book</a></li>
+          <li><a href="buses.html" class="nav-link">Buses Fleet</a></li>
+          <li><a href="passengers.html" class="nav-link">Passengers</a></li>
+          <li><a href="bookings.html" class="nav-link active">Bookings & PNR</a></li>
+          <li><a href="about.html" class="nav-link">About Us</a></li>
+          <li><button class="btn btn-primary btn-sm" onclick="openAddBookingModal()">+ New Booking</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Page Hero Banner with Image -->
+    <section class="page-hero compact">
+      <div class="hero-text-content">
+        <div class="cultural-badge">
+          <span>🎫 Yatra Aarakshan</span> • <span>MySQL Table: bookings</span>
+        </div>
+        <h1 class="hero-title" style="font-size: 2rem;">Bookings & PNR Management</h1>
+        <p class="hero-subtitle">
+          Manage reservations with full CRUD capability: Issue new tickets with auto-generated PNRs, modify journey dates & seats, review Indian payment gateways, and print official electronic reservation slips.
+        </p>
+        <button class="btn btn-primary" onclick="openAddBookingModal()">
+          <span>+ Create New Reservation</span> <span>🎫</span>
+        </button>
+      </div>
+      <div class="hero-image-wrapper">
+        <img src="images/ticket_booking.jpg" alt="Indian electronic reservation ticket and travel luggage" class="hero-image" id="ticketBookingHeroImage">
+        <div class="hero-image-overlay"></div>
+      </div>
+    </section>
+
+    <!-- PNR & Booking Assurance on Picture -->
+    <section style="margin-bottom: 32px;">
+      <div class="features-grid-3">
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/ticket_booking.jpg" alt="Instant PNR Confirmation" class="picture-card-img">
+            <span class="picture-card-tag">🎫 Instant PNR</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Paperless E-Tickets</h3>
+            <p class="picture-card-desc">Receive instant digital boarding passes with QR codes, coach numbers, and seat details sent straight to your phone.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/hero_bus.jpg" alt="Punctual Long-Distance Schedules" class="picture-card-img">
+            <span class="picture-card-tag">⏱️ 99.2% Punctuality</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">GPS Route Tracking</h3>
+            <p class="picture-card-desc">Live vehicle satellite tracking, ETA notifications, and dedicated boarding point coordinator contacts for every trip.</p>
+          </div>
+        </div>
+
+        <div class="picture-card">
+          <div class="picture-card-img-wrapper">
+            <img src="images/buses_fleet.jpg" alt="Flexible Booking & Refunds" class="picture-card-img">
+            <span class="picture-card-tag">💰 Easy Cancellation</span>
+          </div>
+          <div class="picture-card-content">
+            <h3 class="picture-card-title">Zero Hassle Rescheduling</h3>
+            <p class="picture-card-desc">Modify journey dates or cancel reservations with automated UPI/Card refunds credited in accordance with policy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRUD Action & Filter Bar -->
+    <section class="action-bar">
+      <div class="action-search">
+        <input type="text" id="filterPnrInput" class="form-control" placeholder="Search by PNR (e.g. MBR-984210)...">
+        <select id="filterBookingStatus" class="form-control" style="max-width: 170px;">
+          <option value="">All Statuses</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Waiting">Waiting</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div>
+        <span id="bookingsTotalCount" style="font-weight: 700; color: var(--peacock-dark); margin-right: 14px;">Loading bookings...</span>
+        <button class="btn btn-primary" onclick="openAddBookingModal()">+ Create Reservation</button>
+      </div>
+    </section>
+
+    <!-- Bookings Data Table (READ, UPDATE, DELETE) -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PNR</th>
+            <th>Passenger Details</th>
+            <th>Bus Coach & Route</th>
+            <th>Date of Journey</th>
+            <th>Berths / Seats</th>
+            <th>Total Fare (₹)</th>
+            <th>Payment Mode</th>
+            <th>Status</th>
+            <th>Actions (CRUD)</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+          <!-- Loaded dynamically via js/bookings.js -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Cultural Information Box -->
+    <div class="cultural-quote-box">
+      <strong>✨ PNR Guarantee & Conductor Check-In:</strong>
+      <p style="margin-top: 4px;">Every booking generated on the Mithil Reservation Service portal is assigned a unique PNR. Yatris can present their printed ticket or digital SMS to board any coach across Indian national highways without physical counter queues.</p>
+    </div>
+
+  </main>
+
+  <!-- ==========================================================
+       MODAL 1: ADD / EDIT BOOKING (CREATE & UPDATE)
+       ========================================================== -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="bookingModalTitle">Create New Bus Reservation</h3>
+        <button class="close-modal" onclick="UI.closeModal('bookingModal')">&times;</button>
+      </div>
+
+      <form id="bookingForm">
+        <div class="modal-body">
+          <input type="hidden" id="bookingFormId">
+
+          <!-- Passenger & Bus selection (Available in Create mode) -->
+          <div id="modalPassengerBusGroup" class="modal-grid-2">
+            <div class="form-group">
+              <label for="bookingPassengerSelect">Passenger *</label>
+              <select id="bookingPassengerSelect" class="form-control" required>
+                <!-- Loaded via metadata -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bookingBusSelect">Bus Fleet & Route *</label>
+              <select id="bookingBusSelect" class="form-control" required>
+                <!-- Loaded via metadata -->
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="bookingJourneyDateInput">Date of Journey *</label>
+              <input type="date" id="bookingJourneyDateInput" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="bookingSeatsInput">Seat / Berth Numbers *</label>
+              <input type="text" id="bookingSeatsInput" class="form-control" placeholder="e.g. U1, U2 or L4" required>
+            </div>
+          </div>
+
+          <div class="modal-grid-2">
+            <div class="form-group">
+              <label for="bookingFareInput">Total Fare (₹) *</label>
+              <input type="number" id="bookingFareInput" class="form-control" step="10" min="50" placeholder="Auto-calculated or custom" required>
+            </div>
+            <div class="form-group">
+              <label for="bookingPaymentStatusInput">Payment Status *</label>
+              <select id="bookingPaymentStatusInput" class="form-control" required>
+                <option value="Paid (UPI / GPay)">Paid (UPI / GPay)</option>
+                <option value="Paid (RuPay Card)">Paid (RuPay Card)</option>
+                <option value="Paid (NetBanking)">Paid (NetBanking)</option>
+                <option value="Pending">Pending (Pay at Boarding)</option>
+                <option value="Failed">Failed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookingStatusInput">Reservation Status *</label>
+            <select id="bookingStatusInput" class="form-control" required>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Waiting">Waiting</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="UI.closeModal('bookingModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveBooking">Save Reservation 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==========================================================
+       MODAL 2: OFFICIAL INDIAN E-TICKET (PRINTABLE VIEW)
+       ========================================================== -->
+  <div class="modal-overlay" id="eTicketModal">
+    <div class="modal-box" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3><span>🪷</span> Official Electronic Reservation Slip (ERS)</h3>
+        <button class="close-modal" onclick="UI.closeModal('eTicketModal')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="ticket-container">
+          <div class="ticket-header">
+            <div>
+              <strong style="font-family: 'Cinzel', serif; font-size: 1.25rem;">Mithil Reservation Service</strong>
+              <div style="font-size: 0.75rem; color: #cbd5e1;">Government Compliant Intercity E-Ticket</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.75rem; color: #cbd5e1; display: block;">BOOKING PNR</span>
+              <span class="pnr-tag" id="tPnr" style="font-size: 1.15rem; background: #ffedd5; color: #9a3412;">MBR-XXXXXX</span>
+            </div>
+          </div>
+
+          <div class="ticket-body">
+            <div class="ticket-watermark">MITHIL</div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Passenger Name</label>
+                <value id="tPassengerName">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Contact Info</label>
+                <value id="tPassengerContact">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Bus Coach</label>
+                <value id="tBusInfo">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Journey Route</label>
+                <value id="tRoute">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-divider"></div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Date of Journey</label>
+                <value id="tJourneyDate">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Schedule & Timings</label>
+                <value id="tDeparture">--</value>
+              </div>
+            </div>
+
+            <div class="ticket-details-grid">
+              <div class="ticket-field">
+                <label>Berth / Seat(s)</label>
+                <value id="tSeats" style="color: var(--saffron-primary); font-size: 1.25rem;">--</value>
+              </div>
+              <div class="ticket-field">
+                <label>Total Fare Paid</label>
+                <value id="tFare" style="color: var(--emerald-green); font-size: 1.25rem;">--</value>
+              </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px; border-radius: 6px; font-size: 0.8rem; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span>Payment Mode: <strong id="tPaymentStatus" style="color: #ff9933;">--</strong></span> • 
+                <span>Status: <strong id="tBookingStatus" style="color: var(--emerald-green);">Confirmed</strong></span>
+              </div>
+              <div>
+                <span>Shubh Yatra 🪷</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="printTicket()">🖨️ Print E-Ticket</button>
+        <button class="btn btn-primary" onclick="UI.closeModal('eTicketModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      &copy; 2026 Mithil Reservation Service. Bookings & PNR MySQL CRUD Subsystem.
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/bookings.js"></script>
+</body>
+</html>
